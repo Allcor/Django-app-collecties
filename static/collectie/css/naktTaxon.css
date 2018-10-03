@@ -1,0 +1,17 @@
+body{
+    background:#dae1f8;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #f9f9e5;
+ }
+
+.panel-nakt > .panel-heading {
+    background-color: #f8f8da;
+    border-color: #e8bb5f;
+}
+.panel-nakt > .dataTables_wrapper > .dataTables_scroll > .dataTables_scrollHead > .dataTables_scrollHeadInner > table.table-striped > thead > tr > th,
+.panel-nakt > .dataTables_wrapper > .dataTables_scroll > .dataTables_scrollBody > table.table-striped > tbody > tr > td {
+    border-color: #e8bb5f;
+}

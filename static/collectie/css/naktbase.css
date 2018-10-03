@@ -1,0 +1,53 @@
+body{
+    background:#f8f8da;
+}
+
+div.datatables_wrapper {
+    width: inherit;
+    margin: 0 auto;
+}
+
+div.dataTables_length label{
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+table.dataTable {
+  margin-top: 0px !important;
+}
+
+.navbar-default {
+  height: 80px;
+}
+
+.navbar-header {
+  margin-top: 22px;
+}
+
+.MinWidth60 {
+    min-width: 60px;
+}
+
+.MinWidth80 {
+    min-width: 80px;
+}
+
+.noVis {
+    display: none;
+}
+
+.grayedout {
+    background-color: #aaaaaa;
+}
+
+.mellowyellow {
+    background-color: #ece8bd;
+}
+
+.mellowblue {
+    background-color: mediumturquoise;
+}
+
+.mellowred {
+    background-color: tomato;
+}
