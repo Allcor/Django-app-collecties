@@ -1,0 +1,37 @@
+{% extends 'collectie/base.html' %}
+{% load staticfiles %}
+{% load safe_js_parsing %}
+
+{% block content %}
+<div class="content container-fluid">
+<div class = "row">
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title pull-left" style="padding-top: 7.5px; padding-right: 20px;"> Selected items </h2>
+            <div id ="testControlls" class="input-group input-group-sm">
+                <input id="testSearch" type="text" class="form-control" placeholder="Search" name='q' value='{{ request.GET.q }}'>
+            </div>
+        </div>
+        <table id="testTable" class="table table-bordered table-hover" style="margin-top: 0 !important; overflow-x: scroll;" width="100%">
+            <thead>
+                <tr>
+                    {% for column in toets_columns %}
+                    {% if column.headerClass %}<th class={{column.headerClass}}>{% else %}<th>{% endif %}{{ column.head }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block java %}
+    <script type="text/javascript">
+        var toets_columns = {{toets_columns|js}};
+    </script>
+    <script type="text/javascript" src="{% static 'collectie/js/toets-tableview.js' %}"></script>
+    <script type="text/javascript" src="{% static 'collectie/js/toets-pcr.js' %}"></script>
+{% endblock %}

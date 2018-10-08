@@ -1,0 +1,109 @@
+{% extends 'collectie/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="content container">
+<div class = "row">
+<div class="col-lg-8">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="padding: 5px 15px;">
+            <div id ="oligoControlls" class="input-group input-group-sm">
+                <h4 class="panel-title" style="padding-top: 7.5px; padding-right: 20px;">Oligo's</h4>
+            </div>
+        </div>
+        <div style="overflow-y: auto; height: 30% !important;">
+            <table id="oligoTable" class="table">
+                <thead>
+                    <th> primer nr </th>
+                    <th> oligo naam </th>
+                    <th> sequence </th>
+                    <th> label5 </th>
+                    <th> label3 </th>
+                    <th> status </th>
+                    <!--<th> researcher </th>-->
+                    <!--<th>stock_opl</th>-->
+                    <!--<th>werk_opl</th>-->
+                    <!--<th>fabrication_year</th>-->
+                </thead>
+                <tbody>
+                    {% for oligo in toets.pcr_seq_set.all %}
+                    <tr>
+                        <td>{{ oligo.primer_nr }}</td>
+                        <td>{{ oligo.oligo_naam }}</td>
+                        <td>{{ oligo.sequence }}</td>
+                        <td>{{ oligo.label5 }}</td>
+                        <td>{{ oligo.label3 }}</td>
+                        <td>{{ oligo.status }}</td>
+                        <!--<td>{{ oligo.researcher }}</td>-->
+                        <!--<td>{{ oligo.stock_opl }}</td>-->
+                        <!--<td>{{ oligo.werk_opl }}</td>-->
+                        <!--<td>{{ oligo.fabrication_year }}</td>-->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="padding: 5px 15px;">
+            <div id ="infoControlls" class="input-group input-group-sm">
+                <h4 class="panel-title" style="padding-top: 7.5px; padding-right: 20px;">PCR toets Info</h4>
+            </div>
+        </div>
+        <div style="overflow-y: auto; height: 30% !important;">
+            <table id="infoTable" class="table">
+                <thead>
+                    <th> Property </th>
+                    <th> Data </th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Pathogeen</th>
+                        <td>{{ toets.pathogeen }}</td>
+                    </tr>
+                    <tr>
+                        <th>Groep</th>
+                        <td>{{ toets.groep }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="padding: 5px 15px;">
+            <div id ="commentControlls" class="input-group input-group-sm">
+                <h4 class="panel-title" style="padding-top: 7.5px; padding-right: 20px;">Comments</h4>
+            </div>
+        </div>
+        <ul class="list-group">
+            {% if toets.literatuur %}
+            <li class="list-group-item">
+                <h4 class="list-group-item-heading">Literatuur</h4>
+                <p class="list-group-item-text">{{ toets.literatuur }}</p>
+            </li>
+            {% endif %}
+            {% if toets.comment %}
+            <li class="list-group-item">
+                <h4 class="list-group-item-heading">Comment</h4>
+                <p class="list-group-item-text">{{ toets.comment }}</p>
+            </li>
+            {% endif %}
+            {% if toets.pcr_product %}
+            <li class="list-group-item">
+                <h4 class="list-group-item-heading">PCR product</h4>
+                <p class="list-group-item-text">{{ toets.pcr_product }}</p>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block java %}
+{% endblock %}

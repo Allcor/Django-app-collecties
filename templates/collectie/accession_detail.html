@@ -1,0 +1,268 @@
+{% extends 'collectie/base.html' %}
+{% load staticfiles %}
+{% load group_autenticate %}
+
+{% block content %}
+<div class="content container">
+<div class = "row">
+<div class="col-lg-12">
+    <h1>Isolate detail {{ accession.get_name }}</h1>
+</div>
+<div class="col-lg-8">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="padding: 5px 15px;">
+            <div id ="infoControlls" class="input-group input-group-sm">
+                <h4 class="panel-title" style="padding-top: 7.5px; padding-right: 20px;">Info</h4>
+            </div>
+        </div>
+        <div style="overflow-y:auto; height: 30% !important;">
+            <table id="infoTable" class="table">
+                <thead>
+                    <th> Property </th>
+                    <th> Data </th>
+                </thead>
+                {% if not request.user|has_group:'collection admin' %}
+                    <tbody>
+                    <tr>
+                        <th> Pathogen </th>
+                        <td><a href="{% url 'collectie:taxon_detail' accession.pathogen.taxon_id %}">{{ accession.pathogen.taxon.get_name }}</a></td>
+                    </tr>
+                    {% if accession.host %}
+                    <tr>
+                        <th> Found on </th>
+                        <td><a href="{% url 'collectie:taxon_detail' accession.host.taxon_id %}">{{ accession.host.taxon.get_name }}</a></td>
+                    </tr>
+                    {% endif %}
+                    {% if accession.origin %}
+                    <tr>
+                        <th> Country of origin </th>
+                        <td> {{ accession.origin.country.name }} </td>
+                    </tr>
+                    {% endif %}
+                    {% if accession.material %}
+                    <tr>
+                        <th> Isolated from</th>
+                        <td> {{ accession.material }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if accession.symptom %}
+                    <tr>
+                        <th> Observed symptoms</th>
+                        <td> {{ accession.symptom }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if accession.confidential %}
+                    <tr style="background-color: red;">
+                        <th> Convidential </th>
+                        <td> Dienstverlening </td>
+                    </tr>
+                    {% endif %}
+                    </tbody>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="padding: 5px 15px;">
+            <div id ="idControlls" class="input-group input-group-sm">
+                <h4 class="panel-title" style="padding-top: 7.5px; padding-right: 20px;">Associated ID's</h4>
+                <span class="input-group-btn">
+                    <button class="dt-button btn btn-default" id="filterButton" title="Show old">
+                        <i class="glyphicon glyphicon-check toggle-hidden hidden"></i>
+                        <i class="glyphicon glyphicon-unchecked toggle-hidden"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div style="overflow-y: auto; height: 30% !important;">
+            <table id="id_table" class="table">
+                <thead>
+                    <th> type </th>
+                    <th> id </th>
+                </thead>
+                {% if not request.user|has_group:'collection admin' %}
+                <tbody>
+                {% for id in accession.collection_id_set.all %}
+                    {% if id.is_old %}
+                    <tr class="toggle-hidden hidden">
+                    {% else %}
+                    <tr>
+                    {% endif %}
+                        <td>{{ id.code_class }}</td>
+                        <td>{{ id.code_txt }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-lg-6">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="padding: 5px 15px;">
+            <div id ="testsControlls" class="input-group input-group-sm">
+                <h4 class="panel-title" style="padding-top: 7.5px; padding-right: 20px;">Verification tests</h4>
+            </div>
+        </div>
+        <div style="overflow-y: auto; height: 30% !important;">
+            <table id="testsTable" class="table">
+                <thead>
+                    <th> test </th>
+                    <th> comment </th>
+                </thead>
+                {% if not request.user|has_group:'collection admin' %}
+                <tbody>
+                    {% if accession.test_pcr %}
+                       <tr>
+                            <td>pcr</td>
+                            <td>{{ accession.test_pcr }}</td>
+                       </tr>
+                    {% endif %}
+                    {% if accession.test_serology %}
+                       <tr>
+                            <td>serology</td>
+                            <td>{{ accession.test_serology }}</td>
+                       </tr>
+                    {% endif %}
+                    {% if accession.test_patholegy %}
+                       <tr>
+                            <td>patholegy</td>
+                            <td>{{ accession.test_patholegy }}</td>
+                       </tr>
+                    {% endif %}
+                    {% if accession.test_sequencing %}
+                       <tr>
+                            <td>sequencing</td>
+                            <td>{{ accession.test_sequencing }}</td>
+                       </tr>
+                    {% endif %}
+                    </tbody>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+<!--
+<div class="col-lg-6">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="padding: 5px 15px;">
+            <div id ="tests2Controlls" class="input-group input-group-sm">
+                <h4 class="panel-title" style="padding-top: 7.5px; padding-right: 20px;">Verification tests</h4>
+            </div>
+        </div>
+        <div style="overflow-y: auto; height: 30% !important;">
+            <table id="tests2Table" class="table">
+                <thead>
+                    <th> test </th>
+                    <th> result </th>
+                    <th> comment </th>
+                </thead>
+                <tbody>
+                    {% for toets in accession.collection_tests_set.all %}
+                       <tr>
+                            <th>{{ toets.toets }}</th>
+                            <td>{{ toets.result }}</td>
+                            <td>{{ toets.comment }}</td>
+                       </tr>
+                    {% endfor %}
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+-->
+<div class="col-lg-6">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="padding: 5px 15px;">
+            <div id="sample_controls" class="input-group input-group-sm">
+                <h4 class="panel-title" style="padding-top: 7.5px; padding-right: 20px;">Sample History</h4>
+            </div>
+        </div>
+        <div style="overflow-y:auto; height: 30% !important;">
+            <table id="sampleTable" cellspacing="10" class="table table-hover">
+                <thead>
+                    <th> Date </th>
+                    <th> Action </th>
+                    <th> Note </th>
+                </thead>
+                {% if not request.user|has_group:'collection admin' %}
+                <tbody>
+                {% for sample in accession.sample_set.all|dictsort:"date" %}
+                    <tr>
+                        <td>{{ sample.date|date:"Y-m-d" }}</td>
+                        <td>{{ sample.action }}</td>
+                        <td>{{ sample.note }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="padding: 5px 15px;">
+            <div id="comment_controls" class="input-group input-group-sm">
+                <h4 class="panel-title" style="padding-top: 7.5px; padding-right: 20px;">Isolate Comments</h4>
+            </div>
+        </div>
+        <div style="overflow-y:auto; height: 30% !important;">
+            <table id="commentTable" cellspacing="10" class="table table-hover">
+                <thead>
+                    <th> Type </th>
+                    <th> Comment </th>
+                </thead>
+                {% if not request.user|has_group:'collection admin' %}
+                <tbody>
+                {% for comment in accession.collection_comment_set.all %}
+                    <tr>
+                        <td>{{ comment.comment_label }}</td>
+                        <td>{{ comment.comment_txt }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <table id="oldcrap" class="table">
+        <thead>
+            <tr>
+                <th> field </th>
+                <th> value </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for field,value in accession.get_raw_data.items %}
+                <tr>
+                    <th>{{ field }}</th>
+                    <td>{{ value }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block java %}
+    {% if request.user|has_group:'collection admin' %}
+    <link rel="stylesheet" href="{% static 'collectie/css/dataTables.editor.css' %}"/>
+    <link rel="stylesheet" href="{% static 'collectie/css/editor.bootstrap.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css"/>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script type="text/javascript" src="{% static 'collectie/js/dataTables.editor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'collectie/js/editor.bootstrap.js' %}"></script>
+    <script type="text/javascript" src="{% static 'collectie/js/editor.select2.js' %}"></script>
+    <script type="text/javascript" src="{% static 'collectie/js/accession-jquery-edit.js' %}"></script>
+    {% else %}
+    <script type="text/javascript" src="{% static 'collectie/js/accession-jquery.js' %}"></script>
+    {% endif %}
+{% endblock %}

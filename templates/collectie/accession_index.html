@@ -1,0 +1,53 @@
+{% extends 'collectie/base.html' %}
+{% load staticfiles %}
+{% load group_autenticate %}
+{% load safe_js_parsing %}
+
+{% block content %}
+<div class="content container-fluid">
+<div class = "row">
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title pull-left" style="padding-top: 7.5px; padding-right: 20px;"> Collection list </h2>
+            <form class="remove-empty-values" action="{% url 'collectie:edit' %}" onkeypress="return event.keyCode !== 13;">
+                <!-- folloing element will be used by datatable java script -->
+                <div id ="collectControlls" class="input-group input-group-sm">
+                    {% if request.user|has_group:'collection admin' %}
+                        <span class="input-group-btn">
+                            <button class="btn btn-default"  data-toggle="tooltip" title="go to editable table">
+                                <i class="glyphicon glyphicon-pencil" style="margin-top: 2px"></i>
+                            </button>
+                        </span>
+                    {% endif %}
+                    <input id="collectSearch" type="text" class="form-control" placeholder="Search" name='q' value='{{ request.GET.q }}'>
+                </div>
+            </form>
+        </div>
+        <table id="collectionTable" class="table table-bordered table-hover" style="margin-top: 0 !important; overflow-x: scroll;" width="100%">
+            <thead>
+                <tr>
+                    {% for column in columns.html %}
+                        {% if column.class %}
+                            <th class={{column.class}}>
+                        {% else %}
+                            <th>
+                        {% endif %}
+                        {{ column.name }}
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block java %}
+    <script type="text/javascript">
+        var collectControlls_columns = {{columns.javascript|js}};
+    </script>
+    <script type="text/javascript" src="{% static 'collectie/js/collectie-index.js' %}"></script>
+{% endblock %}

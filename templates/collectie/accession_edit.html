@@ -1,0 +1,68 @@
+{% extends 'collectie/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="content container-fluid">
+<div class = "row">
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title pull-left" style="padding-top: 7.5px; padding-right: 20px;"> Collection list </h2>
+            <!-- folloing element will be used by datatable java script -->
+            <div id ="collectControlls" class="input-group input-group-sm">
+                <input id="collectSearch" type="text" class="form-control" placeholder="Search" value='{{ request.GET.q }}'>
+            </div>
+        </div>
+        <table id="collectionTable" class="table table-bordered" style="margin-top: 0 !important;" width="100%">
+            <thead>
+                <tr>
+                    <th class="initiallyHidden">Pathogen Of Isolate</th>
+                    <th>pathogen official</th>
+                    <th class="initiallyHidden">host</th>
+                    <th>host official</th>
+                    <th>country</th>
+                    <th class="initiallyHidden">material</th>
+                    <th class="initiallyHidden">symptom</th>
+                    <th>id nakt</th>
+                    <th>id storidge</th>
+                    <th>id ins</th>
+                    <th>isolaat</th>
+                    <th>first date</th>
+                    <th class="initiallyHidden">test serology</th>
+                    <th class="initiallyHidden">test pathology</th>
+                    <th class="initiallyHidden">test pcr</th>
+                    <th class="initiallyHidden">test sequencing</th>
+                    <th class="initiallyHidden">comment</th>
+                    <th class="noVis">id other</th>
+                    <th class="noVis">pathogen_tree</th>
+                    <th class="noVis">host_tree</th>
+                    <th class="initiallyHidden">add_date</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block java %}
+    <link rel="stylesheet" href="{% static 'collectie/css/dataTables.editor.css' %}"/>
+    <link rel="stylesheet" href="{% static 'collectie/css/editor.bootstrap.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css"/>
+    <!--
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.min.css"/>
+    <link rel="stylesheet" href="{% static 'collectie/css/editor.bootstrapDate.css' %}"/>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="{% static 'collectie/js/editor.bootstrapDate.js' %}"></script>
+    -->
+
+    <script type="text/javascript" src="{% static 'collectie/js/dataTables.editor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'collectie/js/editor.bootstrap.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script type="text/javascript" src="{% static 'collectie/js/editor.select2.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'collectie/js/collectie_edit-jquery.js' %}"></script>
+{% endblock %}

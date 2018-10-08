@@ -1,0 +1,27 @@
+{% extends 'collectie/base.html' %}
+
+{% block content %}
+<div class="content container">
+    <div class = "row">
+        <div class="col-lg-12">
+            {% if taxon_list %}
+                <table id="taxon" class="table table-hover">
+                    {% for taxon in taxon_list %}
+                        <tr onclick="document.location='{{ taxon.tax_id.tax_id }}/'" class="taxon_detail">
+                            <td>{{ taxon.tax_id.rank }}</td>
+                            <td>{{ taxon.name_txt }}</td>
+                            <td>{{ taxon.name_class }}</td>
+                            <!--<td>{{ taxon.similarity }}</td>-->
+                        </tr>
+                    {% endfor %}
+                </table>
+                {% if is_paginated %}
+                    {% include 'collectie/paginate.html' %}
+                {% endif %}
+            {% else %}
+                <p>No Taxon found</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

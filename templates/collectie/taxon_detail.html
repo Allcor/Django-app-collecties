@@ -1,0 +1,117 @@
+{% extends 'collectie/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="content container">
+<div class = "row">
+<div class="col-lg-12">
+    <h1>{{ taxon.get_name }}  <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{taxon.tax_id}}"><small>NCBI:{{taxon.tax_id}}</small></a></h1>
+    <div class="panel panel-default">
+        <div class="panel-body" ><small>
+                <span>root</span>
+            {% for ansestor in taxon.path_to_root %}
+                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true">  </span>  <a href="{% url 'collectie:taxon_detail' ansestor.tax_id %}">{{ansestor.get_name}}</a>
+            {% endfor %}
+        </small></div>
+    </div>
+</div>
+<div class="col-lg-8" >
+    <div class="panel panel-default">
+        <div class="panel-heading">names for {{taxon.rank}}</div>
+        <div style="overflow-y:auto; height: 20% !important;">
+            <table cellspacing="10" class="table">
+            {% for name in taxon.ncbi_names_set.all %}
+                <tr>
+                    <th>{{ name.name_class }}</th>
+                    <td>{{ name.name_txt }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Branching taxon
+            <label class="checkbox-inline pull-right">
+                <input type="checkbox" id="filterCheckbox" value="filter"> show all
+            </label>
+        </div>
+        <div style="overflow-y:auto; height: 20% !important;">
+            <div class="list-group">
+                {% for node in taxon.branch_name_sort %}
+                {% with branshes=node.ncbi_nodes_set.count samples=node.count_branching_samples %}
+                    {% if samples %}
+                        <a href="{% url 'collectie:taxon_detail' node.tax_id %}" class="list-group-item">
+                        <span class="badge" data-toggle="tooltip" data-placement="left" title="Samples linked to this or subsequent taxon" style="background-color:#a04119;">{{ samples }}</span>
+                    {% else %}
+                        <a href="{% url 'collectie:taxon_detail' node.tax_id %}" class="list-group-item toggle-hidden hidden">
+                    {% endif %}
+                    {% if branshes %}
+                            <span class="badge" data-toggle="tooltip" data-placement="left" title="Subsequent branching of taxon" style="background-color:#369;">{{ branshes }}</span>
+                    {% endif %}
+                    {{ node.get_name }}</a>
+                {% endwith %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="panel panel-default panel-nakt">
+    {% with isolations=taxon.get_all_collection %}
+        <div class="panel-heading">
+            <h4 class="panel-title pull-left" style="padding-top: 7.5px; padding-right: 20px;"> {{ isolations|length }} isolates </h4>
+            <form action="{% url 'collectie:index' %}" style="margin-bottom: 0;">
+                <!-- folloing element will be used by datatables java script -->
+                <div id ="tableControlls" class="input-group input-group-sm">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default" data-toggle="tooltip" title="search all accessions for taxon" name="q" value="{{ taxon.get_name }}"> <i class="glyphicon glyphicon-filter"></i> </button>
+                    </span>
+                    <input id="tableSearch" type="text" class="form-control tokenize" placeholder="Search">
+                </div>
+            </form>
+        </div>
+        {% if isolations.exists %}
+            <table id="taxonSamples" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>addition date</th>
+                        <th>pathogen</th>
+                        <th>original host</th>
+                        <th>main ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for sample in isolations %}
+                    <tr>
+                        <td class="datetimeMinWidth">{{ sample.add_date|date:"Y-m-d" }}</td>
+                        <td><a href="{% url 'collectie:taxon_detail' sample.pathogen.taxon.tax_id %}">{{ sample.pathogen.taxon.get_name }}</a></td>
+                        {% if sample.host %}
+                            <td><a href="{% url 'collectie:taxon_detail' sample.host.taxon.tax_id %}">{{ sample.host.taxon.get_name }}</a></td>
+                        {% else %}
+                        <td>Unknown</td>
+                        {% endif %}
+                        <td><a href="{% url 'collectie:accession' sample.nakt_id %}">{{ sample.get_name }}</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="panel-body">
+                No collection items are associated to this taxon.
+            </div>
+        {% endif %}
+    {% endwith %}
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+
+{% block java %}
+    <link rel="stylesheet" href="{% static 'collectie/css/naktTaxon.css' %}">
+    <script type="text/javascript" src="{% static 'collectie/js/taxon-jquery.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+{% load static %}
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.4.0/css/buttons.bootstrap.css"/>
+        <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css"/>
+        <link rel="stylesheet" href="{% static 'collectie/css/naktbase.css' %}"/>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <script type="text/javascript" src="{% static 'collectie/js/jquery-3.2.1.js' %}"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.bootstrap.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.colVis.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.16/dataRender/datetime.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.16/sorting/natural.js"></script>
+        <!--<script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.js"></script>
+        <script type="text/javascript" src="https://rawgit.com/twitter/typeahead.js/master/dist/typeahead.bundle.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/tokenfield-typeahead.css"/>
+        <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.js"></script>-->
+
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <a class="navbar-left" href="{% url 'collectie:index' %}">
+                    <img alt="index" src="{% static 'collectie/images/logo.png' %}" style="height: 70px">
+                </a>
+                <div class="navbar-header navbar-right">
+                    {% if user.is_authenticated %}
+                        <p class="navbar-text">Signed in as : <em id="user_name">{{ user.get_username }}</em></p>
+                        <div class="btn-group" id="header_select_group" role="group" aria-label="select_group">
+                            <a class="btn btn-default navbar-btn" href="{% url 'collectie:labels'%}" title="selected isolates">
+                                Selected
+                                <span class="badge" id="header_select_badge">0</span>
+                            </a>
+                        </div>
+                        <a class="btn btn-default navbar-btn" href="{% url 'logout'%}">Logout</a>
+                    {% else %}
+                        <a class="btn btn-default navbar-btn" href="{% url 'login'%}?next={{request.path}}">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+        {% block content %}
+        {% endblock %}
+    </body>
+    <footer class="naktdata-footer">
+        <script type="text/javascript" src="{% static 'collectie/js/util-selected.js' %}"></script>
+        <div class="container-fluid">
+            {% block java %}
+            {% endblock %}
+        </div>
+        <a href="http://gitlab.naktuinbouw.net/Arlo/naktdata/wikis/home">Tutorials can be found here.</a>
+    </footer>
+</html>

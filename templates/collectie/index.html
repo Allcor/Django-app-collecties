@@ -1,0 +1,31 @@
+{% extends 'collectie/base.html' %}
+
+{% block content %}
+<div class="content container">
+<div class = "row">
+<div class="col-lg-12">
+    <form id="taxon-list-form" class="form-inline" action="{% url 'collectie:taxon_list' %}" accept-charset="utf-8">
+        <div class="form-group">
+            <label for="taxonSearchbox">Search taxon</label>
+            <input class="form-control" id="taxonSearchbox" name="q" type="text" placeholder="species or genus name">
+        </div>
+        <button type="submit" name="page" value="1" class="btn btn-default">search</button>
+    </form>
+</div>
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">Latest entries</div>
+        <table cellspacing="10" class="table table-hover">
+            {% for item in accessions %}
+                <tr onclick="document.location='{{ item.nakt_id }}/'" class="accession">
+                    <th>{{ item.get_name }}</th>
+                    <td>{{ item.add_date|date:"d-m-Y" }}</td>
+                    <td>{{ item.pathogen_tax_id.get_name }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
